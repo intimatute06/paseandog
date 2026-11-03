@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\Admin\DietaController;
+use App\Http\Controllers\Admin\EnfermedadController;
+use App\Http\Controllers\Admin\EtapaController;
 use App\Http\Controllers\Admin\RazaController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -16,7 +19,14 @@ Route::middleware(['auth'])->group(function () {
 
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::resource('razas', RazaController::class)->except(['show']);
+    Route::resource('etapas', EtapaController::class)->except(['show']);
+    Route::resource('enfermedades', EnfermedadController::class)
+        ->except(['show'])
+        ->parameters(['enfermedades' => 'enfermedad']);
+    Route::resource('dietas', DietaController::class)->except(['show']);
 });
+
+
 
 require __DIR__ . '/settings.php';
 require __DIR__ . '/auth.php';
