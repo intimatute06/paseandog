@@ -1,0 +1,74 @@
+import InputError from '@/components/input-error';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import AppLayout from '@/layouts/app-layout';
+import { Head, Link, useForm } from '@inertiajs/react';
+import { FormEventHandler } from 'react';
+
+interface Raza {
+    id: number;
+    nombre: string;
+    tamano: string;
+    nivel_energia: string;
+    minutos_paseo_dia: number;
+}
+
+export default function Edit({ raza }: { raza: Raza }) {
+    const { data, setData, put, processing, errors } = useForm({
+        nombre: raza.nombre,
+        tamano: raza.tamano,
+        nivel_energia: raza.nivel_energia,
+        minutos_paseo_dia: String(raza.minutos_paseo_dia),
+    });
+
+    const submit: FormEventHandler = (e) => {
+        e.preventDefault();
+        put(route('admin.razas.update', raza.id));
+    };
+
+    return (
+        <AppLayout>
+            <Head title="Editar raza" />
+            <div className="max-w-xl p-4">
+                <h1 className="mb-4 text-2xl font-bold">Editar raza</h1>
+
+                <form onSubmit={submit} className="flex flex-col gap-4">
+                    <div className="grid gap-2">
+                        <Label htmlFor="nombre">Nombre</Label>
+                        <Input id="nombre" value={data.nombre} onChange={(e) => setData('nombre', e.target.value)} />
+                        <InputError message={errors.nombre} />
+                    </div>
+
+                    <div className="grid gap-2">
+                        <Label htmlFor="tamano">Tamaño</Label>
+                        <Input id="tamano" value={data.tamano} onChange={(e) => setData('tamano', e.target.value)} />
+                        <InputError message={errors.tamano} />
+                    </div>
+                    <div className="grid gap-2">
+                        <Label htmlFor="nivel_energia">Nivel de energía</Label>
+                        <Input id="nivel_energia" value={data.nivel_energia} onChange={(e) => setData('nivel_energia', e.target.value)} />
+                        <InputError message={errors.nivel_energia} />
+                    </div>
+                    <div className="grid gap-2">
+                        <Label htmlFor="minutos_paseo_dia">Minutos del paseo del dia</Label>
+                        <Input
+                            id="minutos_paseo_dia"
+                            type="number"
+                            value={data.minutos_paseo_dia}
+                            onChange={(e) => setData('minutos_paseo_dia', e.target.value)}
+                        />
+                        <InputError message={errors.minutos_paseo_dia} />
+                    </div>
+
+                    <div className="flex gap-2">
+                        <Button type="submit" disabled={processing}>
+                            Guardar
+                        </Button>
+                        <Link href={route('admin.razas.index')}>Cancelar</Link>
+                    </div>
+                </form>
+            </div>
+        </AppLayout>
+    );
+}

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\RazaController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -13,5 +14,9 @@ Route::middleware(['auth'])->group(function () {
     })->name('dashboard');
 });
 
-require __DIR__.'/settings.php';
-require __DIR__.'/auth.php';
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::resource('razas', RazaController::class)->except(['show']);
+});
+
+require __DIR__ . '/settings.php';
+require __DIR__ . '/auth.php';
