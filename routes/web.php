@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\DietaController;
 use App\Http\Controllers\Admin\EnfermedadController;
 use App\Http\Controllers\Admin\EtapaController;
 use App\Http\Controllers\Admin\RazaController;
+use App\Http\Controllers\Admin\UsuarioController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -31,6 +32,9 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
         ->parameters(['actividades' => 'actividad']);
 
     Route::resource('alternativas', AlternativaController::class)->except(['show']);
+    Route::resource('usuarios', UsuarioController::class)
+        ->only(['index', 'edit', 'update'])
+        ->parameters(['usuarios' => 'usuario']);
 });
 
 

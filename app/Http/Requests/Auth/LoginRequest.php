@@ -48,6 +48,13 @@ class LoginRequest extends FormRequest
                 'email' => __('auth.failed'),
             ]);
         }
+        if (Auth::user()->estado === 'suspendido') {
+            Auth::logout();
+
+            throw ValidationException::withMessages([
+                'email' => 'Tu cuenta está suspendida. Contacta al administrador.',
+            ]);
+        }
 
         RateLimiter::clear($this->throttleKey());
     }
@@ -80,6 +87,6 @@ class LoginRequest extends FormRequest
      */
     public function throttleKey(): string
     {
-        return Str::transliterate(Str::lower($this->string('email')).'|'.$this->ip());
+        return Str::transliterate(Str::lower($this->string('email')) . '|' . $this->ip());
     }
 }
