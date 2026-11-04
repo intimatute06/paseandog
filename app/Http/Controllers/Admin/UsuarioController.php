@@ -62,7 +62,7 @@ class UsuarioController extends Controller
     public function update(Request $request, User $usuario)
     {
         $datos = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
+            'name' => ['required', 'string', 'max:255','regex:/\pL/u'],
             'email' => ['required', 'email', 'max:255', Rule::unique('users')->ignore($usuario->id)],
             'estado' => ['required', 'in:activo,suspendido'],
         ]);

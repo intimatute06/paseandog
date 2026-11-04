@@ -32,7 +32,7 @@ class RazaController extends Controller
     public function store(Request $request)
     {
         $datos = $request->validate([
-            'nombre' => ['required', 'string', 'max:100', 'unique:razas'],
+            'nombre' => ['required', 'string', 'max:100', 'unique:razas','regex:/^[\pL\s\-]+$/u'],
             'tamano' => ['required', 'string', 'max:20'],
             'nivel_energia' => ['required', 'string', 'max:20'],
             'minutos_paseo_dia' => ['required', 'integer', 'min:1', 'max:500'],
@@ -65,7 +65,7 @@ class RazaController extends Controller
     public function update(Request $request, Raza $raza)
     {
         $datos = $request->validate([
-            'nombre' => ['required', 'string', 'max:100', Rule::unique('razas')->ignore($raza->id)],
+            'nombre' => ['required', 'string', 'max:100','regex:/^[\pL\s\-]+$/u', Rule::unique('razas')->ignore($raza->id)],
             'tamano' => ['required', 'string', 'max:20'],
             'nivel_energia' => ['required', 'string', 'max:20'],
             'minutos_paseo_dia' => ['required', 'integer', 'min:1', 'max:500'],

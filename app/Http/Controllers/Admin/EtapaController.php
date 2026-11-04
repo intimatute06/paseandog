@@ -33,7 +33,7 @@ class EtapaController extends Controller
     public function store(Request $request)
     {
         $datos = $request->validate([
-            'nombre' => ['required', 'string', 'max:100', 'unique:etapas'],
+            'nombre' => ['required', 'string', 'max:100', 'unique:etapas','regex:/^[\pL\s\-]+$/u'],
             'edad_min_meses' => ['required', 'integer', 'min:0'],
             'edad_max_meses' => ['required', 'integer', 'gt:edad_min_meses', 'max:240'],
             'intervalo_max_horas' => ['required', 'numeric', 'decimal:0,1', 'min:0.5', 'max:24'],
@@ -45,7 +45,7 @@ class EtapaController extends Controller
             ->exists();
         if ($cruce) {
             throw ValidationException::withMessages([
-                'edad_min_meses' => 'El rango de edad se cruza con otra etapa.',
+                'rango' => 'El rango de edad se cruza con otra etapa.',
             ]);
         }
 
@@ -77,7 +77,7 @@ class EtapaController extends Controller
     public function update(Request $request, Etapa $etapa)
     {
         $datos = $request->validate([
-            'nombre' => ['required', 'string', 'max:100', Rule::unique('etapas')->ignore($etapa->id)],
+            'nombre' => ['required', 'string', 'max:100','regex:/^[\pL\s\-]+$/u', Rule::unique('etapas')->ignore($etapa->id)],
             'edad_min_meses' => ['required', 'integer', 'min:0'],
             'edad_max_meses' => ['required', 'integer', 'gt:edad_min_meses', 'max:240'],
             'intervalo_max_horas' => ['required', 'numeric', 'decimal:0,1', 'min:0.5', 'max:24'],
@@ -90,7 +90,7 @@ class EtapaController extends Controller
             ->exists();
         if ($cruce) {
             throw ValidationException::withMessages([
-                'edad_min_meses' => 'El rango de edad se cruza con otra etapa.',
+                'rango' => 'El rango de edad se cruza con otra etapa.',
             ]);
         }
 

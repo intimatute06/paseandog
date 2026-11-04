@@ -32,7 +32,7 @@ class EnfermedadController extends Controller
     public function store(Request $request)
     {
         $datos = $request->validate([
-            'nombre' => ['required', 'string', 'max:100', 'unique:enfermedades'],
+            'nombre' => ['required', 'string', 'max:100', 'unique:enfermedades','regex:/^[\pL\s\-]+$/u'],
             'descripcion' => ['nullable', 'string'],
             'intensidad_max' => ['nullable', 'string', 'in:baja,media,alta'],
             'intervalo_max_horas' => ['nullable', 'numeric', 'decimal:0,1', 'min:0.5', 'max:24'],
@@ -67,7 +67,7 @@ class EnfermedadController extends Controller
     public function update(Request $request, Enfermedad $enfermedad)
     {
         $datos = $request->validate([
-            'nombre' => ['required', 'string', 'max:100',  Rule::unique('enfermedades')->ignore($enfermedad->id)],
+            'nombre' => ['required', 'string', 'max:100','regex:/^[\pL\s\-]+$/u',  Rule::unique('enfermedades')->ignore($enfermedad->id)],
             'descripcion' => ['nullable', 'string'],
             'intensidad_max' => ['nullable', 'string', 'in:baja,media,alta'],
             'intervalo_max_horas' => ['nullable', 'numeric', 'decimal:0,1', 'min:0.5', 'max:24'],

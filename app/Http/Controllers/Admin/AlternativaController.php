@@ -32,7 +32,7 @@ class AlternativaController extends Controller
     public function store(Request $request)
     {
         $datos = $request->validate([
-            'nombre' => ['required', 'string', 'max:100', 'unique:alternativas'],
+            'nombre' => ['required', 'string', 'max:100', 'unique:alternativas','regex:/^[\pL\s\-]+$/u'],
             'aplica_a' => ['required', 'string', 'in:necesidades,comida'],
             'instrucciones' => ['required', 'string']
         ]);
@@ -64,7 +64,7 @@ class AlternativaController extends Controller
     public function update(Request $request, Alternativa $alternativa)
     {
         $datos = $request->validate([
-            'nombre' => ['required', 'string', 'max:100', Rule::unique('alternativas')->ignore($alternativa->id)],
+            'nombre' => ['required', 'string', 'max:100','regex:/^[\pL\s\-]+$/u', Rule::unique('alternativas')->ignore($alternativa->id)],
             'aplica_a' => ['required', 'string', 'in:necesidades,comida'],
             'instrucciones' => ['required', 'string'],
         ]);

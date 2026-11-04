@@ -35,11 +35,15 @@ export default function Create() {
                     <div className="grid gap-2">
                         <Label htmlFor="tamano">Tamaño</Label>
                         <Input id="tamano" value={data.tamano} onChange={(e) => setData('tamano', e.target.value)} />
+                        <p className="text-muted-foreground text-sm">
+                            Según el peso adulto típico: Pequeño (menos de 10 kg), Mediano (10 a 25 kg) o Grande (más de 25 kg).
+                        </p>
                         <InputError message={errors.tamano} />
                     </div>
                     <div className="grid gap-2">
                         <Label htmlFor="nivel_energia">Nivel de energía</Label>
                         <Input id="nivel_energia" value={data.nivel_energia} onChange={(e) => setData('nivel_energia', e.target.value)} />
+                        <p className="text-muted-foreground text-sm">Baja, Media o Alta.</p>
                         <InputError message={errors.nivel_energia} />
                     </div>
                     <div className="grid gap-2">

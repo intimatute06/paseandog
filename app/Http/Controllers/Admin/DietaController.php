@@ -38,7 +38,7 @@ class DietaController extends Controller
     public function store(Request $request)
     {
         $datos = $request->validate([
-            'etapa_id' => ['required', 'integer', 'exists:etapas,id'],
+            'etapa_id' => ['required', 'integer', 'exists:etapas,id',],
             'enfermedad_id' => ['nullable', 'integer', 'exists:enfermedades,id'],
             'comidas_dia' => ['required', 'integer', 'min:1', 'max:6'],
             'porcion_por_kg' => ['required', 'numeric', 'decimal:0,2', 'min:1', 'max:100'],

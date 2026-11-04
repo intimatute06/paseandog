@@ -79,6 +79,7 @@ export default function Edit({ enfermedad }: { enfermedad: Enfermedad }) {
                             value={data.intervalo_max_horas}
                             onChange={(e) => setData('intervalo_max_horas', e.target.value)}
                         />
+                        <p className="text-muted-foreground text-sm">En horas. Ejemplo: 2.5 = 2 h 30 min.</p>
                         <InputError message={errors.intervalo_max_horas} />
                     </div>
 

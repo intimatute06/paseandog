@@ -33,6 +33,8 @@ export default function Create() {
                         <InputError message={errors.nombre} />
                     </div>
 
+                    <InputError message={(errors as Record<string, string>).rango} />
+
                     <div className="grid gap-2">
                         <Label htmlFor="edad_min_meses">Edad mínima (meses)</Label>
                         <Input
@@ -64,6 +66,7 @@ export default function Create() {
                             value={data.intervalo_max_horas}
                             onChange={(e) => setData('intervalo_max_horas', e.target.value)}
                         />
+                        <p className="text-muted-foreground text-sm">En horas. Ejemplo: 2.5 = 2 h 30 min.</p>
                         <InputError message={errors.intervalo_max_horas} />
                     </div>
 
