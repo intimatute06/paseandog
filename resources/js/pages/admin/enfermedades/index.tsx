@@ -59,5 +59,4 @@ export default function Index({ enfermedades }: { enfermedades: Enfermedad[] }) 
             </div>
         </AppLayout>
     );
-
 }

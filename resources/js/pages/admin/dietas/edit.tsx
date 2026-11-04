@@ -41,14 +41,11 @@ export default function Edit({ dieta, etapas, enfermedades, existentes }: Props)
         recomendaciones: dieta.recomendaciones ?? '',
     });
 
-  
     const etapaElegida = Number(data.etapa_id);
 
     const sanaYaExiste = existentes.some((d) => d.etapa_id === etapaElegida && d.enfermedad_id === null);
 
-    const enfermedadesDisponibles = enfermedades.filter(
-        (enf) => !existentes.some((d) => d.etapa_id === etapaElegida && d.enfermedad_id === enf.id),
-    );
+    const enfermedadesDisponibles = enfermedades.filter((enf) => !existentes.some((d) => d.etapa_id === etapaElegida && d.enfermedad_id === enf.id));
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
@@ -102,12 +99,7 @@ export default function Edit({ dieta, etapas, enfermedades, existentes }: Props)
 
                     <div className="grid gap-2">
                         <Label htmlFor="comidas_dia">Comidas al día</Label>
-                        <Input
-                            id="comidas_dia"
-                            type="number"
-                            value={data.comidas_dia}
-                            onChange={(e) => setData('comidas_dia', e.target.value)}
-                        />
+                        <Input id="comidas_dia" type="number" value={data.comidas_dia} onChange={(e) => setData('comidas_dia', e.target.value)} />
                         <InputError message={errors.comidas_dia} />
                     </div>
 

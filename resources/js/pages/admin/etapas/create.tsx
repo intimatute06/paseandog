@@ -6,7 +6,6 @@ import AppLayout from '@/layouts/app-layout';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
 
-
 export default function Create() {
     const { data, setData, post, processing, errors } = useForm({
         nombre: '',
@@ -30,11 +29,7 @@ export default function Create() {
                 <form onSubmit={submit} className="flex flex-col gap-4">
                     <div className="grid gap-2">
                         <Label htmlFor="nombre">Nombre</Label>
-                        <Input
-                            id="nombre"
-                            value={data.nombre}
-                            onChange={(e) => setData('nombre', e.target.value)}
-                        />
+                        <Input id="nombre" value={data.nombre} onChange={(e) => setData('nombre', e.target.value)} />
                         <InputError message={errors.nombre} />
                     </div>
 

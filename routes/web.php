@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Admin\AlternativaController;
+use App\Http\Controllers\Admin\ActividadCompensacionController;
 use App\Http\Controllers\Admin\DietaController;
 use App\Http\Controllers\Admin\EnfermedadController;
 use App\Http\Controllers\Admin\EtapaController;
@@ -24,6 +26,11 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
         ->except(['show'])
         ->parameters(['enfermedades' => 'enfermedad']);
     Route::resource('dietas', DietaController::class)->except(['show']);
+    Route::resource('actividades', ActividadCompensacionController::class)
+        ->except(['show'])
+        ->parameters(['actividades' => 'actividad']);
+
+    Route::resource('alternativas', AlternativaController::class)->except(['show']);
 });
 
 

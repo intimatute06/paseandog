@@ -74,5 +74,3 @@ export default function Index({ dietas }: { dietas: Dieta[] }) {
         </AppLayout>
     );
 }
-
-
