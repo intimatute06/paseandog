@@ -86,7 +86,7 @@ class EtapaController extends Controller
 
         $cruce = Etapa::where('edad_min_meses', '<=', $datos['edad_max_meses'])
             ->where('edad_max_meses', '>=', $datos['edad_min_meses'])
-            ->where('id', '!=', $etapa->id) 
+            ->where('id', '!=', $etapa->id)
             ->exists();
         if ($cruce) {
             throw ValidationException::withMessages([
@@ -104,6 +104,13 @@ class EtapaController extends Controller
      */
     public function destroy(Etapa $etapa)
     {
+
+        if ($etapa->dietas()->exists()) {
+            return back()->withErrors([
+                'borrar' => 'No se puede borrar esta etapa porque hay dietas que la usan.',
+            ]);
+        }
+        
         $etapa->delete();
 
         return to_route('admin.etapas.index');

@@ -86,6 +86,13 @@ class EnfermedadController extends Controller
      */
     public function destroy(Enfermedad $enfermedad)
     {
+
+        if ($enfermedad->dietas()->exists()) {
+            return back()->withErrors([
+                'borrar' => 'No se puede borrar esta etapa porque hay dietas que la usan.',
+            ]);
+        }
+
         $enfermedad->delete();
 
         return to_route('admin.enfermedades.index');

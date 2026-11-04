@@ -1,5 +1,5 @@
 import AppLayout from '@/layouts/app-layout';
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, usePage } from '@inertiajs/react';
 
 interface Enfermedad {
     id: number;
@@ -11,6 +11,8 @@ interface Enfermedad {
 }
 
 export default function Index({ enfermedades }: { enfermedades: Enfermedad[] }) {
+    const { errors } = usePage().props;
+
     return (
         <AppLayout>
             <Head title="Enfermedades" />
@@ -19,6 +21,8 @@ export default function Index({ enfermedades }: { enfermedades: Enfermedad[] }) 
                     <h1 className="text-2xl font-bold">Enfermedades</h1>
                     <Link href={route('admin.enfermedades.create')}>Nueva enfermedad</Link>
                 </div>
+
+                {errors.borrar && <p className="mb-4 text-red-600">{errors.borrar}</p>}
 
                 {enfermedades.length === 0 ? (
                     <p>No hay enfermedades registradas.</p>

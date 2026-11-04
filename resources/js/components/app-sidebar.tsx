@@ -1,36 +1,30 @@
-import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
 import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
-import { type NavItem } from '@/types';
-import { Link } from '@inertiajs/react';
-import { BookOpen, Folder, LayoutGrid } from 'lucide-react';
 import AppLogo from './app-logo';
+import { type NavItem, type SharedData } from '@/types';
+import { Link, usePage } from '@inertiajs/react';
 
 const mainNavItems: NavItem[] = [
-    {
-        title: 'Dashboard',
-        url: '/dashboard',
-        icon: LayoutGrid,
-    },
+    { title: 'Inicio', url: '/dashboard'},
 ];
 
-const footerNavItems: NavItem[] = [
-    {
-        title: 'Repository',
-        url: 'https://github.com/laravel/react-starter-kit',
-        icon: Folder,
-    },
-    {
-        title: 'Documentation',
-        url: 'https://laravel.com/docs/starter-kits',
-        icon: BookOpen,
-    },
+const adminNavItems: NavItem[] = [
+    { title: 'Razas', url: '/admin/razas' },
+    { title: 'Etapas', url: '/admin/etapas' },
+    { title: 'Enfermedades', url: '/admin/enfermedades' },
+    { title: 'Dietas', url: '/admin/dietas' },
+    { title: 'Actividades', url: '/admin/actividades' },
+    { title: 'Alternativas', url: '/admin/alternativas'},
+    { title: 'Usuarios', url: '/admin/usuarios' },
 ];
 
 export function AppSidebar() {
+    const { auth } = usePage<SharedData>().props;
+    const esAdmin = auth.user.rol === 'admin';
+
     return (
-        <Sidebar collapsible="icon" variant="inset">
+        <Sidebar variant="inset">
             <SidebarHeader>
                 <SidebarMenu>
                     <SidebarMenuItem>
@@ -45,10 +39,10 @@ export function AppSidebar() {
 
             <SidebarContent>
                 <NavMain items={mainNavItems} />
+                {esAdmin && <NavMain items={adminNavItems} label="Administración" />}
             </SidebarContent>
 
             <SidebarFooter>
-                <NavFooter items={footerNavItems} className="mt-auto" />
                 <NavUser />
             </SidebarFooter>
         </Sidebar>
