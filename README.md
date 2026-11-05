@@ -11,7 +11,7 @@
 
 **App en línea:** https://paseandog.onrender.com
 
-**Video de la entrega:** _(agregar el link de Loom o YouTube)_
+**Video de la entrega:** https://youtu.be/yRXLvYebJlY
 
 ---
 
