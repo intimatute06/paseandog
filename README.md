@@ -1,4 +1,4 @@
-# 🐾 Paseandog
+# Paseandog
 
 ![Estado](https://img.shields.io/badge/estado-en%20desarrollo-orange)
 ![Laravel](https://img.shields.io/badge/Laravel-12-FF2D20?logo=laravel&logoColor=white)
@@ -9,28 +9,29 @@
 
 **Planificador del cuidado del perro.** A partir de los datos del perro y del horario del dueño, el core de Paseandog genera una agenda semanal de salidas, comidas y paseos.
 
-🔗 **App en línea:** https://paseandog.onrender.com
-🎥 **Video de la entrega:** _(agregar el link de Loom o YouTube)_
+**App en línea:** https://paseandog.onrender.com
+
+**Video de la entrega:** _(agregar el link de Loom o YouTube)_
 
 ---
 
-## 📑 Índice
+## Índice
 
-1. [Descripción del proyecto](#-descripción-del-proyecto)
-2. [Estado del proyecto](#-estado-del-proyecto)
-3. [Funcionalidades](#-funcionalidades)
-4. [Cómo la administración alimenta al core](#-cómo-la-administración-alimenta-al-core)
-5. [Requisitos de la entrega](#-requisitos-de-la-entrega)
-6. [Acceso al proyecto](#-acceso-al-proyecto)
-7. [Tecnologías utilizadas](#-tecnologías-utilizadas)
-8. [Arquitectura](#-arquitectura)
-9. [Modelo de datos de la administración](#-modelo-de-datos-de-la-administración)
-10. [Persona desarrolladora](#-persona-desarrolladora)
-11. [Licencia](#-licencia)
+1. [Descripción del proyecto](#descripción-del-proyecto)
+2. [Estado del proyecto](#estado-del-proyecto)
+3. [Funcionalidades](#funcionalidades)
+4. [Cómo la administración alimenta al core](#cómo-la-administración-alimenta-al-core)
+5. [Requisitos de la entrega](#requisitos-de-la-entrega)
+6. [Acceso al proyecto](#acceso-al-proyecto)
+7. [Tecnologías utilizadas](#tecnologías-utilizadas)
+8. [Arquitectura](#arquitectura)
+9. [Modelo de datos de la administración](#modelo-de-datos-de-la-administración)
+10. [Persona desarrolladora](#persona-desarrolladora)
+11. [Licencia](#licencia)
 
 ---
 
-## 📖 Descripción del proyecto
+## Descripción del proyecto
 
 Paseandog ayuda a los dueños a organizar el cuidado diario de sus perros. Su core, el servicio **`PlanificadorAgenda`**, recorre los datos del perro (edad, raza, peso y enfermedades) y el horario del dueño, y genera una agenda semanal con:
 
@@ -43,17 +44,17 @@ El core no inventa estas reglas: las lee de la base de datos. Las carga el **adm
 
 Proyecto final de **Ingeniería Web**, Universidad de las Américas (UDLA).
 
-## 🚧 Estado del proyecto
+## Estado del proyecto
 
 | Módulo | Estado |
 |---|---|
-| Administración (catálogos que alimentan al core) | ✅ Terminado |
-| Gestión de usuarios | ✅ Terminado |
-| Deploy en Render | ✅ Terminado |
-| Módulos del dueño (perros, horario, contactos) | 🔄 En desarrollo |
-| Core `PlanificadorAgenda` y reporte de cumplimiento | 🔄 En desarrollo |
+| Administración (catálogos que alimentan al core) | Terminado |
+| Gestión de usuarios | Terminado |
+| Deploy en Render | Terminado |
+| Módulos del dueño (perros, horario, contactos) | En desarrollo |
+| Core `PlanificadorAgenda` y reporte de cumplimiento | En desarrollo |
 
-## ✨ Funcionalidades
+## Funcionalidades
 
 ### Administración
 - **CRUD de 6 catálogos:** razas, etapas, enfermedades, dietas, actividades de compensación y alternativas en casa.
@@ -65,7 +66,7 @@ Proyecto final de **Ingeniería Web**, Universidad de las Américas (UDLA).
 ### Autenticación
 - Registro, inicio de sesión y cierre de sesión con el starter kit oficial de Laravel, extendido con **roles** (`admin` y `dueno`) y **suspensión de cuentas**.
 
-## 🔗 Cómo la administración alimenta al core
+## Cómo la administración alimenta al core
 
 El administrador no carga datos de un perro en particular, sino **las reglas que el core aplica a los perros de todos los dueños**:
 
@@ -78,7 +79,7 @@ El administrador no carga datos de un perro en particular, sino **las reglas que
 | **Actividades de compensación** | Con qué compensar un paseo incompleto. El factor de equivalencia convierte sus minutos en minutos de paseo |
 | **Alternativas en casa** | Qué usar cuando el dueño no está: el patio para las necesidades o el dispensador para la comida |
 
-## ✅ Requisitos de la entrega
+## Requisitos de la entrega
 
 | Requisito | Cómo se cumple |
 |---|---|
@@ -86,10 +87,10 @@ El administrador no carga datos de un perro en particular, sino **las reglas que
 | **2. Dropdowns para las llaves foráneas** | La **dieta** depende de una **etapa** (obligatoria) y de una **enfermedad** (opcional). Ninguna se escribe a mano: se eligen en **dropdowns cargados desde la base**, en **cascada**. Al elegir la etapa, el dropdown de enfermedad solo muestra las que todavía no tienen dieta en esa etapa. En el back-end se valida con `exists` y se impide repetir una combinación. |
 | **3. Código en Git, con README, y desplegado** | Este repositorio, y la app en línea en **Render**. |
 
-## 🚀 Acceso al proyecto
+## Acceso al proyecto
 
 ### En línea
-👉 **https://paseandog.onrender.com**
+**https://paseandog.onrender.com**
 
 > El plan gratuito de Render se suspende tras unos minutos sin visitas. La primera carga puede tardar entre 30 y 60 segundos.
 
@@ -135,7 +136,7 @@ La app queda en **http://localhost:8000**.
 
 **Crear el administrador:** registrarse en `/register` y cambiar la columna `rol` de ese usuario a `admin` en la base de datos. Hay un solo administrador; el resto de usuarios se registran como dueños.
 
-## 🛠️ Tecnologías utilizadas
+## Tecnologías utilizadas
 
 | Capa | Tecnología |
 |---|---|
@@ -147,7 +148,7 @@ La app queda en **http://localhost:8000**.
 | Traducciones | [Laravel Lang](https://laravel-lang.com) (español) |
 | Deploy | [Render](https://render.com) con Docker |
 
-## 🏗️ Arquitectura
+## Arquitectura
 
 El proyecto sigue el patrón **MVC**:
 
@@ -164,7 +165,7 @@ El proyecto sigue el patrón **MVC**:
 - `resources/js/components/app-sidebar.tsx`: barra lateral que muestra la sección Administración solo al administrador.
 - `Dockerfile`: instala PHP y Node, compila el front-end y corre las migraciones al arrancar en Render.
 
-## 🗃️ Modelo de datos de la administración
+## Modelo de datos de la administración
 
 | Tabla | Columnas principales | Reglas |
 |---|---|---|
@@ -181,12 +182,12 @@ El proyecto sigue el patrón **MVC**:
 - **Intervalos:** en horas decimales. Por ejemplo, 2.5 equivale a 2 horas y 30 minutos.
 - **Factor de equivalencia:** minutos equivalentes = duración de la actividad × factor. Por ejemplo, 10 minutos de olfato con factor 1,5 equivalen a 15 minutos de paseo.
 
-## 👤 Persona desarrolladora
+## Persona desarrolladora
 
 **Inti Matute**
 Estudiante de Ingeniería de Software, Universidad de las Américas (UDLA).
 GitHub: [@intimatute06](https://github.com/intimatute06)
 
-## 📄 Licencia
+## Licencia
 
 Proyecto académico desarrollado para la materia de Ingeniería Web. Sin licencia de uso abierto.
