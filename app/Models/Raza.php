@@ -12,4 +12,10 @@ class Raza extends Model
         'nivel_energia',
         'minutos_paseo_dia',
     ];
+
+ 
+    public function perros(){
+        return $this->hasMany(Perro::class);
+    }
 }
+

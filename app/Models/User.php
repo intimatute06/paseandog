@@ -46,4 +46,8 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function perros(){
+        return $this->hasMany(Perro::class);
+    }
 }
