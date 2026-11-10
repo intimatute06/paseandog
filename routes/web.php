@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\EnfermedadController;
 use App\Http\Controllers\Admin\EtapaController;
 use App\Http\Controllers\Admin\RazaController;
 use App\Http\Controllers\Admin\UsuarioController;
+use App\Http\Controllers\Dueno\PerroController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -35,6 +36,10 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::resource('usuarios', UsuarioController::class)
         ->only(['index', 'edit', 'update'])
         ->parameters(['usuarios' => 'usuario']);
+});
+
+Route::middleware(['auth'])->prefix('dueno')->name('dueno.')->group(function () {
+    Route::resource('perros', PerroController::class)->except(['show']);
 });
 
 

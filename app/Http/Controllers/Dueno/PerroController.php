@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Dueno;
 
 use App\Http\Controllers\Controller;
+use App\Models\Perro;
 use App\Models\Raza;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
@@ -76,8 +77,13 @@ class PerroController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Request $request, Perro $perro)
     {
-        //
+        if ($perro->user_id !== $request->user()->id) {
+            abort(403);
+        }
+
+        $perro->delete();
+        return to_route('dueno..perros.index');
     }
 }
