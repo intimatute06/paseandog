@@ -84,6 +84,6 @@ class PerroController extends Controller
         }
 
         $perro->delete();
-        return to_route('dueno..perros.index');
+        return to_route('dueno.perros.index');
     }
 }
