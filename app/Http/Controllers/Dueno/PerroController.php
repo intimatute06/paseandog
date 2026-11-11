@@ -61,17 +61,38 @@ class PerroController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Request $request, Perro $perro)
     {
-        //
+
+        if ($perro->user_id !== $request->user()->id) {
+            abort(403);
+        }
+
+        return Inertia::render('dueno/perros/edit', [
+            'perro' => $perro,
+            'razas' => Raza::orderBy('nombre')->get(['id', 'nombre']),
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Perro $perro)
     {
-        //
+        if ($perro->user_id !== $request->user()->id) {
+            abort(403);
+        }
+        
+        $datos = $request->validate([
+            'raza_id' => ['required', 'integer', 'exists:razas,id'],
+            'nombre' => ['required', 'string', 'max:50', 'regex:/^[\pL\s\-]+$/u'],
+            'fecha_nacimiento' => ['required', 'date', 'before_or_equal:today'],
+            'peso_kg' => ['required', 'numeric', 'decimal:0,2', 'min:0.5', 'max:150'],
+
+        ]);
+
+        $perro->update($datos);
+        return to_route('dueno.perros.index');
     }
 
     /**

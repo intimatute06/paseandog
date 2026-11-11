@@ -6,7 +6,7 @@ interface Perro {
     nombre: string;
     fecha_nacimiento: string;
     peso_kg: string;
-    raza: { nombre: string };//esto es como el paquete de raza de otra tabla
+    raza: { nombre: string };
 }
 
 export default function Index({ perros }: { perros: Perro[] }) {
