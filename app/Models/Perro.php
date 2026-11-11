@@ -27,4 +27,9 @@ class Perro extends Model
     public function raza(){
         return $this->belongsTo(Raza::class);
     }
+
+    public function enfermedades(){
+        // un perro tiene muchos registros de enfermedades
+        return $this->hasMany(PerroEnfermedad::class);
+    }
 }
