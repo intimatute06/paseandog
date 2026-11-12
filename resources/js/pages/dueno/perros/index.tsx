@@ -57,6 +57,7 @@ export default function Index({ perros }: { perros: Perro[] }) {
                                             >
                                                 Borrar
                                             </Link>
+                                            <Link href={route('dueno.perros.enfermedades.index', perro.id)}>Enfermedades</Link>
                                         </div>
                                     </td>
 

@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\EtapaController;
 use App\Http\Controllers\Admin\RazaController;
 use App\Http\Controllers\Admin\UsuarioController;
 use App\Http\Controllers\Dueno\PerroController;
+use App\Http\Controllers\Dueno\PerroEnfermedadController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -40,7 +41,11 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 
 Route::middleware(['auth'])->prefix('dueno')->name('dueno.')->group(function () {
     Route::resource('perros', PerroController::class)->except(['show']);
+    Route::resource('perros.enfermedades',PerroEnfermedadController::class)
+    ->only(['index','store','update','destroy'])
+    ->parameters(['enfermedades' => 'registro']);
 });
+
 
 
 
