@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\EnfermedadController;
 use App\Http\Controllers\Admin\EtapaController;
 use App\Http\Controllers\Admin\RazaController;
 use App\Http\Controllers\Admin\UsuarioController;
+use App\Http\Controllers\Dueno\HorarioController;
 use App\Http\Controllers\Dueno\PerroController;
 use App\Http\Controllers\Dueno\PerroEnfermedadController;
 use Illuminate\Support\Facades\Route;
@@ -41,9 +42,13 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 
 Route::middleware(['auth'])->prefix('dueno')->name('dueno.')->group(function () {
     Route::resource('perros', PerroController::class)->except(['show']);
-    Route::resource('perros.enfermedades',PerroEnfermedadController::class)
-    ->only(['index','store','update','destroy'])
-    ->parameters(['enfermedades' => 'registro']);
+    Route::resource('perros.enfermedades', PerroEnfermedadController::class)
+        ->only(['index', 'store', 'update', 'destroy'])
+        ->parameters(['enfermedades' => 'registro']);
+    Route::get('horario', [HorarioController::class, 'index'])->name('horario.index');
+    Route::put('horario/horas', [HorarioController::class, 'actualizarHoras'])->name('horario.horas');
+    Route::post('horario', [HorarioController::class, 'store'])->name('horario.store');
+    Route::delete('horario/{horario}', [HorarioController::class, 'destroy'])->name('horario.destroy');
 });
 
 

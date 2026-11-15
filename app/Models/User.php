@@ -22,6 +22,8 @@ class User extends Authenticatable
         'email',
         'password',
         'estado',
+        'hora_levantarse',
+        'hora_acostarse'
     ];
 
     /**
@@ -47,7 +49,13 @@ class User extends Authenticatable
         ];
     }
 
-    public function perros(){
+    public function perros()
+    {
         return $this->hasMany(Perro::class);
+    }
+
+    public function horarios()
+    {
+        return $this->hasMany(Horario::class);
     }
 }

@@ -6,7 +6,7 @@ import { type NavItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
 
 const mainNavItems: NavItem[] = [
-    { title: 'Inicio', url: '/dashboard'},
+    { title: 'Inicio', url: '/dashboard' },
 ];
 
 const adminNavItems: NavItem[] = [
@@ -15,8 +15,12 @@ const adminNavItems: NavItem[] = [
     { title: 'Enfermedades', url: '/admin/enfermedades' },
     { title: 'Dietas', url: '/admin/dietas' },
     { title: 'Actividades', url: '/admin/actividades' },
-    { title: 'Alternativas', url: '/admin/alternativas'},
+    { title: 'Alternativas', url: '/admin/alternativas' },
     { title: 'Usuarios', url: '/admin/usuarios' },
+];
+const duenoNavItems: NavItem[] = [
+    { title: 'Mis perros', url: '/dueno/perros' },
+    { title: 'Mi horario', url: '/dueno/horario' },
 ];
 
 export function AppSidebar() {
@@ -39,6 +43,7 @@ export function AppSidebar() {
 
             <SidebarContent>
                 <NavMain items={mainNavItems} />
+                <NavMain items={duenoNavItems} label="Mi perro" />
                 {esAdmin && <NavMain items={adminNavItems} label="Administración" />}
             </SidebarContent>
 
