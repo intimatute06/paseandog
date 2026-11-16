@@ -21,6 +21,7 @@ const adminNavItems: NavItem[] = [
 const duenoNavItems: NavItem[] = [
     { title: 'Mis perros', url: '/dueno/perros' },
     { title: 'Mi horario', url: '/dueno/horario' },
+    { title: 'Contactos', url: '/dueno/contactos' },
 ];
 
 export function AppSidebar() {
