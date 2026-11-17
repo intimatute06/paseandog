@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Dueno\AlternativaController as DuenoAlternativaController;
 use App\Http\Controllers\Admin\AlternativaController;
 use App\Http\Controllers\Admin\ActividadCompensacionController;
 use App\Http\Controllers\Admin\DietaController;
@@ -51,6 +52,8 @@ Route::middleware(['auth'])->prefix('dueno')->name('dueno.')->group(function () 
     Route::post('horario', [HorarioController::class, 'store'])->name('horario.store');
     Route::delete('horario/{horario}', [HorarioController::class, 'destroy'])->name('horario.destroy');
     Route::resource('contactos', ContactoController::class)->except('show');
+    Route::get('alternativas',[DuenoAlternativaController::class, 'index'])->name('alternativas.index');
+    Route::put('alternativas',[DuenoAlternativaController::class, 'guardar'])->name('alternativas.guardar');
 });
 
 

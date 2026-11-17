@@ -40,7 +40,7 @@ export default function Horario({ usuario, bloques }: Props) {
 
     const agregarBloques: FormEventHandler = (e) => {
         e.preventDefault();
-        bloque.post(route('dueno.horario.store'), {
+        bloque.post(route('dueno.horario.store'), { 
             onSuccess: () => bloque.reset(),
         });
     }

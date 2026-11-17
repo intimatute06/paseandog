@@ -62,4 +62,7 @@ class User extends Authenticatable
     {
         return $this->hasMany(ContactoApoyo::class);
     }
+    public function alternativas(){
+        return $this->belongsToMany(Alternativa::class,'dueno_alternativas');
+    }
 }

@@ -30,7 +30,7 @@ export default function Index({ contactos }: { contactos: Contacto[] }) {
                             <tr className="border-b">
                                 <th className='p-2'>Nombre</th>
                                 <th className='p-2'>Relación</th>
-                                <th className='p-2'>Telefonó</th>
+                                <th className='p-2'>Teléfono</th>
                                 <th className='p-2'>Principal</th>
                                 <th className='p-2'>Acciones</th>
                             </tr>
