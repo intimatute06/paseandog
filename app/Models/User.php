@@ -65,4 +65,8 @@ class User extends Authenticatable
     public function alternativas(){
         return $this->belongsToMany(Alternativa::class,'dueno_alternativas');
     }
+    public function agenda(){
+        //has many por que usuarios pueden tener varias eventos en su agenda
+        return $this->hasMany(Agenda::class);
+    }
 }

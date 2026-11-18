@@ -25,7 +25,7 @@ export default function Index({ perros }: { perros: Perro[] }) {
                     )}
                 </div>
                 {perros.length === 0 ? (
-                    <p>{"No hay Perros Registrados"}</p>
+                    <p>No hay Perros Registrados</p>
                 ) : (
                     <table className="w-full text-left">
                         <thead>

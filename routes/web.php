@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\EnfermedadController;
 use App\Http\Controllers\Admin\EtapaController;
 use App\Http\Controllers\Admin\RazaController;
 use App\Http\Controllers\Admin\UsuarioController;
+use App\Http\Controllers\Dueno\AgendaController;
 use App\Http\Controllers\Dueno\ContactoController;
 use App\Http\Controllers\Dueno\HorarioController;
 use App\Http\Controllers\Dueno\PerroController;
@@ -54,6 +55,8 @@ Route::middleware(['auth'])->prefix('dueno')->name('dueno.')->group(function () 
     Route::resource('contactos', ContactoController::class)->except('show');
     Route::get('alternativas',[DuenoAlternativaController::class, 'index'])->name('alternativas.index');
     Route::put('alternativas',[DuenoAlternativaController::class, 'guardar'])->name('alternativas.guardar');
+    Route::get('agenda',[AgendaController::class,'index'])->name('agenda.index');
+    Route::post('agenda',[AgendaController::class,'generar'])->name('agenda.generar');
 });
 
 

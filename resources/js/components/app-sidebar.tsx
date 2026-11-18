@@ -23,6 +23,7 @@ const duenoNavItems: NavItem[] = [
     { title: 'Mi horario', url: '/dueno/horario' },
     { title: 'Contactos', url: '/dueno/contactos' },
     { title: 'Alternativas en casa', url: '/dueno/alternativas' },
+    { title: 'Mi agenda', url: '/dueno/agenda' },
 ];
 
 export function AppSidebar() {
