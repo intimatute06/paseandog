@@ -18,17 +18,23 @@ class PlanificadorAgenda
 
         $fecha = Carbon::now()->next(Carbon::MONDAY);
         $libres = $this->bloquesLibres($user, 1);
-      
+        $intervaloMenor = 24; //cualquier perro podria ganarlo
+
+
+
 
         foreach ($user->perros as $perro) { //por cada perro de usuario lo llamamos perro
+        
             //llamaos al metodo de la misma clase para el perro del usuario
             $etapa = $this->calcularEtapa($perro);
-
             $intervalo = $this->calcularIntervalo($perro, $etapa);
-            //ubicar y guardar las necesidades del perro
-            $this->ubicarNecesidades($user, $perro, $fecha, $libres, $intervalo);
+
+            if ($intervalo < $intervaloMenor) {
+                $intervaloMenor = $intervalo;
+            }
         }
-       
+        //ubicar y guardar las necesidades de los perros una sola vez
+        $this->ubicarNecesidades($user, $user->perros, $fecha, $libres, $intervaloMenor);
     }
 
 
@@ -103,13 +109,13 @@ class PlanificadorAgenda
     }
 
     //ubicar las salidas de necesidades segun el intervalo
-    private function ubicarNecesidades($user, $perro, $fecha, $libres, $intervalo)
+    private function ubicarNecesidades($user, $perros, $fecha, $libres, $intervalo)
     {
         //LA HORA ARRANCA  al levantarse y el limite es acostar
         //carbon para que la hora sea objeto que se pueda calcular el intervalo
         $hora = Carbon::parse($user->hora_levantarse);
         $acostarse = Carbon::parse($user->hora_acostarse);
-        
+
         //para empezar a colocar las necesidades en los huecos libres
         while ($hora < $acostarse) {
             $alerta = 'Sin hueco libre:delegar o usar alternativa';
@@ -131,10 +137,13 @@ class PlanificadorAgenda
                 'alerta' => $alerta,
             ]);
 
-            //guardar que perro participa en ese evento
-            $evento->agendaperro()->create([
-                'perro_id' => $perro->id,
-            ]);
+            //guardar a los perros participa en ese evento
+            foreach ($perros as $perro) {
+
+                $evento->agendaperro()->create([
+                    'perro_id' => $perro->id,
+                ]);
+            }
 
             //convertir hora a minutos para las horas fraccion no se pierdan
             $hora->addMinutes($intervalo * 60);
