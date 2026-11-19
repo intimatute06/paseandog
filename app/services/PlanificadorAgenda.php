@@ -6,6 +6,7 @@ namespace App\Services;
 
 use App\Models\Etapa;
 use App\Models\User;
+use Carbon\Carbon;
 
 class PlanificadorAgenda
 {
@@ -14,21 +15,20 @@ class PlanificadorAgenda
     public function generarAgenda(User $user): void
     {
         //es void por que solo guarda la agenda  
-        $libres = $this->bloquesLibres($user,2);
-        dump($libres);
+
+        $fecha = Carbon::now()->next(Carbon::MONDAY);
+        $libres = $this->bloquesLibres($user, 1);
+      
 
         foreach ($user->perros as $perro) { //por cada perro de usuario lo llamamos perro
             //llamaos al metodo de la misma clase para el perro del usuario
             $etapa = $this->calcularEtapa($perro);
 
             $intervalo = $this->calcularIntervalo($perro, $etapa);
-            
-          
-
-            //mostramos el nombre del perro y el nombre de la etapa
-            dump($perro->nombre, $etapa?->nombre, $intervalo);
+            //ubicar y guardar las necesidades del perro
+            $this->ubicarNecesidades($user, $perro, $fecha, $libres, $intervalo);
         }
-        dd('fin');
+       
     }
 
 
@@ -103,7 +103,43 @@ class PlanificadorAgenda
     }
 
     //ubicar las salidas de necesidades segun el intervalo
-    private function ubicarNecesidades() {}
+    private function ubicarNecesidades($user, $perro, $fecha, $libres, $intervalo)
+    {
+        //LA HORA ARRANCA  al levantarse y el limite es acostar
+        //carbon para que la hora sea objeto que se pueda calcular el intervalo
+        $hora = Carbon::parse($user->hora_levantarse);
+        $acostarse = Carbon::parse($user->hora_acostarse);
+        
+        //para empezar a colocar las necesidades en los huecos libres
+        while ($hora < $acostarse) {
+            $alerta = 'Sin hueco libre:delegar o usar alternativa';
+            $textohora = $hora->format('H:i:s'); //convierte el carbon a texto por la base horario
+            //de la funcion de arriba traemos el inicio y el fin
+            foreach ($libres as $hueco) {
+                //aqui se compara texto con texto
+                if ($textohora >= $hueco['inicio'] && $textohora <= $hueco['fin']) {
+                    $alerta = null;
+                }
+            }
+
+            //guardar el evento en la agenda gracias al user_id lo pone en relacion
+            $evento = $user->agenda()->create([
+                'fecha' => $fecha,
+                'hora_inicio' => $textohora,
+                'duracion_min' => 15,
+                'tipo' => 'necesidades',
+                'alerta' => $alerta,
+            ]);
+
+            //guardar que perro participa en ese evento
+            $evento->agendaperro()->create([
+                'perro_id' => $perro->id,
+            ]);
+
+            //convertir hora a minutos para las horas fraccion no se pierdan
+            $hora->addMinutes($intervalo * 60);
+        }
+    }
 
     //ubicar las comidas segun la dieta
     private function ubicarComidas() {}
