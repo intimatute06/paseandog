@@ -16,15 +16,19 @@ class PlanificadorAgenda
     {
         //es void por que solo guarda la agenda  
 
-        $fecha = Carbon::now()->next(Carbon::MONDAY);
-        $libres = $this->bloquesLibres($user, 1);
+        $fecha = Carbon::today();
+        // antes de generar, borro la agenda de este usuario desde esa fecha en adelante (para no duplicar)
+        $user->agenda()->where('fecha', '>=', $fecha->toDateString())->delete();
+
+
+
         $intervaloMenor = 24; //cualquier perro podria ganarlo
 
 
 
 
         foreach ($user->perros as $perro) { //por cada perro de usuario lo llamamos perro
-        
+
             //llamaos al metodo de la misma clase para el perro del usuario
             $etapa = $this->calcularEtapa($perro);
             $intervalo = $this->calcularIntervalo($perro, $etapa);
@@ -33,8 +37,19 @@ class PlanificadorAgenda
                 $intervaloMenor = $intervalo;
             }
         }
+
+        for ($i = 0; $i < 7; $i++) {
+            //obtenemos el dia por cada vuelta fecha(15)+1+2 y asi
+            $dia = $fecha->copy()->addDays($i);
+
+            //los huecos de ese día: dayOfWeekIso pasa la fecha a su número (1 = lunes ... 7 = domingo)
+            $libres = $this->bloquesLibres($user, $dia->dayOfWeekIso);
+
+            // ubicar las salidas de ESE día
+            $this->ubicarNecesidades($user, $user->perros, $dia->toDateString(), $libres, $intervaloMenor);
+        }
         //ubicar y guardar las necesidades de los perros una sola vez
-        $this->ubicarNecesidades($user, $user->perros, $fecha, $libres, $intervaloMenor);
+       
     }
 
 

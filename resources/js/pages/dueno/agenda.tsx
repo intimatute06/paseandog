@@ -29,7 +29,7 @@ export default function Agenda({ eventos }: { eventos: Evento[] }) {
                         Generar agenda
                     </Link>
                 </div>
-                
+
                 {eventos.length === 0 ? (
                     <p>No hay agendas registradas</p>
                 ) : (
@@ -39,24 +39,30 @@ export default function Agenda({ eventos }: { eventos: Evento[] }) {
                                 <th className="p-2">Fecha</th>
                                 <th className="p-2">Hora</th>
                                 <th className="p-2">Tipo</th>
-                                 <th className="p-2">Perros</th>
+                                <th className="p-2">Perros</th>
+                                <th className="p-2">Alerta</th>
                             </tr>
                         </thead>
                         <tbody>
                             {eventos.map((evento) => (
                                 <tr key={evento.id} className="border-b">
-                                    
-                                     <td className="p-2">{evento.fecha.slice(0,10)}</td>
-                                        <td className="p-2">{evento.hora_inicio.slice(0,5)}</td>
-                                        <td className="p-2">{evento.tipo}</td>
+
+                                    <td className="p-2">{evento.fecha.slice(0, 10)}</td>
+                                    <td className="p-2">{evento.hora_inicio.slice(0, 5)}</td>
+                                    <td className="p-2">{evento.tipo}</td>
                                     <td className="p-2">
-                                       
-                                       
-                                        
+
+
+
                                         {evento.agendaperro.map((ap) => (
                                             <div key={ap.id}>{ap.perro.nombre} · {ap.estado}</div>
                                         ))}
                                     </td>
+                                    <td className="p-2">
+                                        {evento.alerta ? evento.alerta : '-'}
+
+                                    </td>
+
                                 </tr>
                             ))}
                         </tbody>
