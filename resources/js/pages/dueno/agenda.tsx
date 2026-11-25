@@ -55,7 +55,9 @@ export default function Agenda({ eventos }: { eventos: Evento[] }) {
 
 
                                         {evento.agendaperro.map((ap) => (
-                                            <div key={ap.id}>{ap.perro.nombre} · {ap.estado}</div>
+                                            <div key={ap.id}>
+                                                {ap.perro.nombre} · {ap.estado}{ap.porcion_g ? ` · ${ap.porcion_g} g` : ''}
+                                            </div>
                                         ))}
                                     </td>
                                     <td className="p-2">
