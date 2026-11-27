@@ -22,6 +22,7 @@ class AgendaController extends Controller
         //los eventos para la agenda
         $eventos =  $request->user() //la persona
         ->agenda()//sus eventos
+        ->where('fecha', '>=', today()->toDateString())
         ->with('agendaperro.perro')//con la agenda del perro que sirve de camino para traer el nombre del perro gracias a la conexion agenda
         ->orderBy('fecha')//ordenados por diay dentro del dia 
         ->orderBy('hora_inicio')//por hota

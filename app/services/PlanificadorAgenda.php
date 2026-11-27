@@ -27,6 +27,7 @@ class PlanificadorAgenda
 
 
         $perrosQueComen = [];
+        $perrosPaseo = [];
 
         //para la meta de paseos
         $metaPaseo = 0;
@@ -41,6 +42,12 @@ class PlanificadorAgenda
                 'perro'   => $perro,
                 'comidas' => $dieta->comidas_dia,
                 'porcion' => $this->calcularPorcion($perro, $dieta),
+            ];
+            $perrosPaseo[] = [
+                'perro' => $perro,
+                'meta' => $perro->raza->minutos_paseo_dia,
+                'intensidad' => $this->calcularIntensidad($perro),
+
             ];
 
 
@@ -67,9 +74,11 @@ class PlanificadorAgenda
             $candidatasPaseo = $this->ubicarNecesidades($user, $user->perros, $dia->toDateString(), $libres, $intervaloMenor);
 
             // convertir en paseo las mejores candidatas hasta cumplir la meta
-            $this->convertirEnPaseos($candidatasPaseo, $metaPaseo);
+            $this->convertirEnPaseos($candidatasPaseo, $metaPaseo, $perrosPaseo);
 
             $this->ubicarComidas($user, $perrosQueComen, $dia->toDateString(), $libres);
+
+            
         }
     }
 
@@ -107,6 +116,18 @@ class PlanificadorAgenda
             }
         }
         return (float) $intervalo;
+    }
+
+    //intensidad del paseo, normal a menos que el perro tenga enfermedad
+    private function calcularIntensidad($perro){
+        $intensidad = $perro->raza->nivel_energia;
+        foreach($perro->enfermedades as $registro){
+            if($registro->activa && $registro->enfermedad->intensidad_max !== null){
+                $intensidad = $registro->enfermedad->intensidad_max;
+
+            }
+        }
+        return $intensidad;
     }
 
 
@@ -176,13 +197,26 @@ class PlanificadorAgenda
         $hora = Carbon::parse($user->hora_levantarse); //carbon para que la hora sea objeto que se pueda calcular el intervalo
         $acostarse = Carbon::parse($user->hora_acostarse);
 
+        //armar la lista de horas de salida segun el intervalo
+        $horasSalida = [];
+        while($hora<$acostarse){
+            $horasSalida[] = $hora->copy();
+            $hora->addMinutes($intervalo * 60);
+        }
+        //arreglo de la ultima salida debe salir antes de dormir
+        $ultima = end($horasSalida);
+        if($ultima->diffInMinutes($acostarse) > 60){
+            $horasSalida[] = $acostarse->copy()->subMinutes(15);
+        }
+
+
         //candidatas que podrian ser paseo
         $candidatasPaseo = [];
 
         //para empezar a colocar las necesidades en los huecos libres
-        while ($hora < $acostarse) {
+        foreach($horasSalida as $horaSalidaCarbon) {
             // la hora en texto, para comparar con los huecos y guardar
-            $horaSalida = $hora->format('H:i:s');
+            $horaSalida = $horaSalidaCarbon->format('H:i:s');
 
             // Pregunta a la funcion
             $alerta = $this->estaLibre($horaSalida, $libres) ? null : 'Sin hueco libre: delegar o usar alternativa';
@@ -209,14 +243,9 @@ class PlanificadorAgenda
             if ($hueco) {
                 $candidatasPaseo[] = [
                     'evento' => $evento,
-                    'disponible' => $hora->diffInMinutes(Carbon::parse($hueco['fin'])),
+                    'disponible' => $horaSalidaCarbon->diffInMinutes(Carbon::parse($hueco['fin'])),
                 ];
             }
-
-
-
-            //con el intervalo de salids por 60
-            $hora->addMinutes($intervalo * 60);
         }
         return $candidatasPaseo;
     }
@@ -311,13 +340,22 @@ class PlanificadorAgenda
     }
 
     //convertir salidas en paseos
-    private function convertirEnPaseos($candidatasPaseo, $metaPaseo)
+    private function convertirEnPaseos($candidatasPaseo, $metaPaseo, $perrosPaseo)
     {
         //ordenar de mayor a menr
         usort($candidatasPaseo, fn($a, $b) => $b['disponible'] <=> $a['disponible']);
 
         //lo que falta por pasear arranca en la meta
         $falta = $metaPaseo;
+
+        //lo que falta a cada perro segun su raza
+        $faltaPerro =[];
+        foreach($perrosPaseo as $p){
+            //anotamos lo que le falta a cada perro
+            $faltaPerro[$p['perro']->id] = $p['meta'];
+        }
+
+        
 
         //repartir
         foreach ($candidatasPaseo as $c) {
@@ -334,6 +372,19 @@ class PlanificadorAgenda
                 'duracion_min' => $minutos,
 
             ]);
+
+            foreach($perrosPaseo as $p){
+                $id = $p['perro']->id;
+                $minutosPerro = min($faltaPerro[$id],$minutos);
+                //lo que falta a este perro, lo que dura este paseo para no caminar de mas
+
+                $c['evento']->agendaperro()->where('perro_id', $id)->update([
+                    'minutos_requeridos' => $minutosPerro,
+                    'intensidad' => $p['intensidad'],
+                ]);
+                $faltaPerro[$id] = $faltaPerro[$id] - $minutosPerro;
+
+            }
 
             //restar lo que ya asigne en cada vuelta
             $falta = $falta - $minutos;
